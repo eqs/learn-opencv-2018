@@ -1,5 +1,7 @@
 \documentclass[10pt]{beamer}
 
+\usefonttheme[onlymath]{serif}
+
 \usepackage{amsmath,amssymb}
 \usepackage{zxjatype}
 \usepackage[ipa]{zxjafont}
@@ -7,6 +9,7 @@
 \usepackage{tikz}
 \usepackage{tikzsymbols}
 \usepackage{appendixnumberbeamer}
+\usepackage{minted}
 
 % --- page number ---
 \setbeamertemplate{footline}{%
@@ -14,11 +17,14 @@
 }
 
 % --- title logo ---
-
 \newcommand{\myinsertlogo}[1]{%
 \begin{tikzpicture}[overlay, remember picture]
     \node[above left=1cm and .8cm of current page.south east] {\includegraphics[width=2.25cm]{#1}};
 \end{tikzpicture}}
+
+% --- utils ---
+\newcommand{\mymain}[1]{\textcolor{mLightBrown}{#1}}
+\newcommand{\myaccent}[1]{\textcolor{mLightGreen}{#1}}
 
 \title{Introduction to OpenCV}
 \date{\today}
@@ -60,4 +66,58 @@
 				\end{itemize}
 		\end{enumerate}
 	\end{frame}
+
+	\section{1章：概要}
+
+	\begin{frame}{title}
+		aaa
+	\end{frame}
+	
+	\section{2章：OpenCV入門}
+	
+	\begin{frame}{title}
+		aaa
+	\end{frame}
+	
+	\section{10章：フィルタとコンボリューション}
+	
+	\begin{frame}{画像フィルタリング}
+		\begin{itemize}
+			\item 画像を色の値からなる「2次元配列」ではなく，「2変数関数」と解釈する
+			\item 画像フィルタリング：入力画像$I(x, y)$から新しい画像$I'(x, y)$を計算するアルゴリズム
+				\begin{itemize}
+					\item 例1：ある画像からぼけた画像を生成する
+					\item 例2：ある画像を白と黒のみからなる画像に変換する
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{画像フィルタリングの内容はカーネルによって定義される}
+		\begin{itemize}
+			\item 出力画像$I'(x, y)$の位置$(x, y)$における画素値は入力画像中の位置$(x, y)$周辺の画素から計算される
+			\[ I'(x, y) = \sum_{i, j \in \mathit{kernel}} k_{i, j} \cdot I(x + i, y + j) \]
+			\item 上式中の$k_{i, j}$を\mymain{線形カーネル（フィルタ）}と呼ぶ
+			\item 画像に対してカーネル（線形，非線形問わず）を
+				適用する操作を\mymain{コンボリューション}と呼ぶ
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{線形カーネルと適用のイメージ}
+		\begin{center}
+			\begin{tabular}{|c|c|c|}\hline
+				$\frac{1}{9}$ & $\frac{1}{9}$ & $\frac{1}{9}$ \\ \hline
+				$\frac{1}{9}$ & $\frac{1}{9}$ & $\frac{1}{9}$ \\ \hline
+				$\frac{1}{9}$ & $\frac{1}{9}$ & $\frac{1}{9}$ \\ \hline
+			\end{tabular}
+		\end{center}
+	\end{frame}
+
+	\begin{frame}[fragile]{線形カーネルによる画像フィルタリングの例：平滑化}
+
+	\end{frame}
+	
+	\begin{frame}{境界の設定}
+		
+	\end{frame}
+
 \end{document}
