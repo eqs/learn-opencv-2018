@@ -1,0 +1,36 @@
+\documentclass[10pt]{beamer}
+
+\usepackage{amsmath,amssymb}
+\usepackage{zxjatype}
+\usepackage[ipa]{zxjafont}
+\usetheme{metropolis}
+\usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{appendixnumberbeamer}
+
+% --- page number ---
+\setbeamertemplate{footline}{%
+	\raisebox{10pt}{\makebox[\paperwidth]{\hfill\makebox[7em]{\normalsize\texttt{\insertframenumber/\inserttotalframenumber}}}}%
+}
+
+% --- title logo ---
+
+\newcommand{\myinsertlogo}[1]{%
+\begin{tikzpicture}[overlay, remember picture]
+    \node[above left=1cm and .8cm of current page.south east] {\includegraphics[width=2.25cm]{#1}};
+\end{tikzpicture}}
+
+\title{日本語 (Japanese) のタイトル}
+\date{\today}
+\author{Satoshi Murashige}
+\institute{Mathematical Informatics Lab., NAIST}
+
+\begin{document}
+    \begin{frame}[plain]
+        \maketitle
+        %\myinsertlogo{spam.pdf}
+    \end{frame}
+    \begin{frame}{Title}
+        Hello metropolis!
+    \end{frame}
+\end{document}
