@@ -1,16 +1,17 @@
 \documentclass[10pt]{beamer}
 
-\usefonttheme[onlymath]{serif}
-
 \usepackage{amsmath,amssymb}
 \usepackage{zxjatype}
 \usepackage[ipa]{zxjafont}
-\usetheme{metropolis}
+\usetheme[progressbar=frametitle]{metropolis}
 \usepackage{tikz}
 \usepackage{tikzsymbols}
 \usepackage{appendixnumberbeamer}
 \usepackage{minted}
 \usepackage{url}
+
+\usetikzlibrary{positioning}
+\usefonttheme[onlymath]{serif}
 
 % --- page number ---
 \setbeamertemplate{footline}{%
@@ -37,7 +38,7 @@
 \begin{document}
 	\begin{frame}[plain]
 		\maketitle
-		%\myinsertlogo{spam.pdf}
+		\myinsertlogo{naist.pdf}
 	\end{frame}
 	\begin{frame}{Text books}
 		『詳解 OpenCV 3』
