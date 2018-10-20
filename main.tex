@@ -10,6 +10,7 @@
 \usepackage{tikzsymbols}
 \usepackage{appendixnumberbeamer}
 \usepackage{minted}
+\usepackage{url}
 
 % --- page number ---
 \setbeamertemplate{footline}{%
@@ -25,6 +26,8 @@
 % --- utils ---
 \newcommand{\mymain}[1]{\textcolor{mLightBrown}{#1}}
 \newcommand{\myaccent}[1]{\textcolor{mLightGreen}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
 
 \title{Introduction to OpenCV}
 \date{\today}
@@ -37,7 +40,7 @@
 		%\myinsertlogo{spam.pdf}
 	\end{frame}
 	\begin{frame}{Text books}
-		『詳解 OpenCV』
+		『詳解 OpenCV 3』
 	\end{frame}
 	\begin{frame}{Table of Contents}
 		\begin{enumerate}
@@ -67,6 +70,48 @@
 		\end{enumerate}
 	\end{frame}
 
+	\begin{frame}{サンプルコードについて}
+		\begin{itemize}
+			\item テキスト中のプログラムはすべてC++で書かれている
+			\item 今回使用するコードはそれらをPython向けに書き直したもの
+				\begin{itemize}
+					\item 全部は書き直していない \Winkey[1.5]
+					\item なるべくPythonicなスタイルにするのと説明の都合により機能が異なることがある
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Pythonを使用するメリット・デメリット}
+		\begin{itemize}
+			\item Pythonを使用するメリット \red{\Smiley[1.5]}
+				\begin{itemize}
+					\item コンパイル不要なのでTry \& Errorがしやすい
+					\item Python向けの強力な開発環境の恩恵を受けられる
+					\item Pythonで書かれた他のモジュールとの組み合わせが容易になる
+				\end{itemize}
+			\item Pythonを使用するデメリット \blue{\Sadey[1.5]}
+				\begin{itemize}
+					\item 上手に書かないとめっちゃ遅くなる
+					\item 上手に書いても最適化されたC++の速度には及ばない \\
+						(リアルタイム性が求められるタスクでなければ最低限の最適化でOK)
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}[fragile]{前準備}
+		\begin{itemize}
+			\item サンプルコードのリポジトリをダウンロードする
+				\begin{center}
+					\url{https://github.com/eqs/opencv3-book-python.git}
+				\end{center}
+			\item 画像処理用の画像をダウンロードする
+				\begin{itemize}
+					\item \mymain{\texttt{cd}}コマンドで\mymain{\texttt{images}}に
+						移動してから\mymain{\texttt{sh get\_images.sh}}を実行
+				\end{itemize}
+		\end{itemize}
+	\end{frame}
+
 	\section{1章：概要}
 
 	\begin{frame}{title}
@@ -75,8 +120,80 @@
 	
 	\section{2章：OpenCV入門}
 	
-	\begin{frame}{title}
-		aaa
+	\begin{frame}[fragile]{初めてのプログラム--写真を表示する}
+
+		\begin{minted}{python}
+import cv2
+
+img = cv2.imread('../images/color/Lenna.bmp')
+assert img is not None, 'Loading image is failed.'
+
+cv2.namedWindow('Example 2-1', cv2.WINDOW_AUTOSIZE)
+cv2.imshow('Example 2-1', img)
+
+cv2.waitKey(0)
+cv2.destroyWindow('Example 2-1')
+		\end{minted}
+	\end{frame}
+	
+	\begin{frame}[fragile]{2つ目のプログラム--動画}
+		動画やカメラの映像に対する処理を行う際は，
+		このプログラムが雛型になる
+
+		\scriptsize
+		\begin{minted}{python}
+import cv2
+
+cv2.namedWindow('Example 2-3', cv2.WINDOW_AUTOSIZE)
+cap = cv2.VideoCapture(0)
+assert cap.isOpened(), 'Cannot open the video.'
+
+while True:
+    
+    ok, frame = cap.read()
+
+    if not ok:
+        break
+    
+    cv2.imshow('Example 2-3', frame)
+    
+    key = cv2.waitKey(33)
+    if key >= 0:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+		\end{minted}
+	\end{frame}
+
+	\begin{frame}[fragile]{OpenCVで画像を読み込み，Matplotlibで表示する：\\色チャネルの順番が逆になっているので注意}
+		\scriptsize
+		\begin{minted}{python}
+import cv2
+from matplotlib import pyplot as plt
+
+img_bgr = cv2.imread('../images/color/Lenna.bmp')
+
+assert img_bgr is not None, 'Loading image is failed.'
+assert len(img_bgr.shape) == 3, 'Loaded image is not color'
+
+# 画像をBGRからRGBに変換する
+img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB) 
+
+# 変換前の画像を表示
+plt.subplot(1, 2, 1), plt.imshow(img_bgr), plt.title('BGR image')
+# 変換後の画像を表示
+plt.subplot(1, 2, 2), plt.imshow(img_rgb), plt.title('RGB image')
+plt.show()
+		\end{minted}
+	\end{frame}
+
+	\begin{frame}{実行結果}
+		OpenCVはカラー画像をBGR画像として読み込むが，
+		MatplotlibはRGB画像として解釈しようとするので表示が変になる
+		\begin{center}
+			\includegraphics[width=10cm]{./figs/bgr_rgb.png}
+		\end{center}
 	\end{frame}
 	
 	\section{10章：フィルタとコンボリューション}
@@ -112,7 +229,7 @@
 		\end{center}
 	\end{frame}
 
-	\begin{frame}[fragile]{線形カーネルによる画像フィルタリングの例：平滑化}
+	\begin{frame}{線形カーネルによる画像フィルタリングの例：平滑化}
 
 	\end{frame}
 	
